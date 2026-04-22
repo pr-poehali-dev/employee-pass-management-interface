@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -33,24 +33,46 @@ const APPLICATIONS: Application[] = [
   { id: "ЗАЯ-004", name: "Новикова Елена Игоревна", object: "Тагул", status: "pending", validUntil: "01.08.2026", position: "Прораб", passType: "Карта", submittedAt: "20.04.2026" },
   { id: "ЗАЯ-005", name: "Фёдоров Павел Олегович", object: "ВЧНГ", status: "active", validUntil: "20.05.2026", position: "Монтажник", passType: "QR", submittedAt: "01.04.2026" },
   { id: "ЗАЯ-006", name: "Орлова Марина Дмитриевна", object: "ВСНК", status: "expired", validUntil: "01.04.2026", position: "Бухгалтер", passType: "Карта", submittedAt: "10.03.2026" },
+  { id: "ЗАЯ-007", name: "Белов Сергей Николаевич", object: "Сузун", status: "active", validUntil: "10.07.2026", position: "Геолог", passType: "QR", submittedAt: "05.04.2026" },
+  { id: "ЗАЯ-008", name: "Захарова Ольга Михайловна", object: "ВСНК", status: "pending", validUntil: "01.09.2026", position: "Эколог", passType: "Карта", submittedAt: "21.04.2026" },
+  { id: "ЗАЯ-009", name: "Тихонов Роман Валерьевич", object: "Тагул", status: "active", validUntil: "15.08.2026", position: "Бурильщик", passType: "QR", submittedAt: "12.04.2026" },
+  { id: "ЗАЯ-010", name: "Громов Артём Игоревич", object: "ВЧНГ", status: "pending", validUntil: "30.07.2026", position: "Оператор ДНГ", passType: "QR", submittedAt: "22.04.2026" },
 ];
 
 const JOURNAL: JournalEntry[] = [
-  { id: "1", name: "Иванов Алексей Петрович", object: "Сузун", date: "22.04.2026", entryTime: "07:45", exitTime: "18:30", passType: "QR" },
-  { id: "2", name: "Смирнова Анна Владимировна", object: "ОБП", date: "22.04.2026", entryTime: "08:01", exitTime: "17:55", passType: "Карта" },
-  { id: "3", name: "Фёдоров Павел Олегович", object: "ВЧНГ", date: "22.04.2026", entryTime: "07:58", exitTime: "18:10", passType: "QR" },
-  { id: "4", name: "Козлов Дмитрий Сергеевич", object: "Дойтаги", date: "21.04.2026", entryTime: "08:15", exitTime: "17:40", passType: "QR" },
-  { id: "5", name: "Новикова Елена Игоревна", object: "Тагул", date: "21.04.2026", entryTime: "08:00", exitTime: "18:00", passType: "Карта" },
-  { id: "6", name: "Орлова Марина Дмитриевна", object: "ВСНК", date: "20.04.2026", entryTime: "09:00", exitTime: "16:30", passType: "Карта" },
+  { id: "1",  name: "Иванов Алексей Петрович",    object: "Сузун",   date: "22.04.2026", entryTime: "07:45", exitTime: "18:30", passType: "QR" },
+  { id: "2",  name: "Смирнова Анна Владимировна", object: "ОБП",     date: "22.04.2026", entryTime: "08:01", exitTime: "17:55", passType: "Карта" },
+  { id: "3",  name: "Фёдоров Павел Олегович",     object: "ВЧНГ",    date: "22.04.2026", entryTime: "07:58", exitTime: "18:10", passType: "QR" },
+  { id: "4",  name: "Белов Сергей Николаевич",    object: "Сузун",   date: "22.04.2026", entryTime: "08:20", exitTime: "17:45", passType: "QR" },
+  { id: "5",  name: "Тихонов Роман Валерьевич",   object: "Тагул",   date: "22.04.2026", entryTime: "07:30", exitTime: "19:00", passType: "QR" },
+  { id: "6",  name: "Громов Артём Игоревич",      object: "ВЧНГ",    date: "22.04.2026", entryTime: "08:05", exitTime: "18:05", passType: "QR" },
+  { id: "7",  name: "Козлов Дмитрий Сергеевич",  object: "Дойтаги", date: "21.04.2026", entryTime: "08:15", exitTime: "17:40", passType: "QR" },
+  { id: "8",  name: "Новикова Елена Игоревна",    object: "Тагул",   date: "21.04.2026", entryTime: "08:00", exitTime: "18:00", passType: "Карта" },
+  { id: "9",  name: "Захарова Ольга Михайловна",  object: "ВСНК",    date: "21.04.2026", entryTime: "09:10", exitTime: "17:30", passType: "Карта" },
+  { id: "10", name: "Иванов Алексей Петрович",    object: "Сузун",   date: "21.04.2026", entryTime: "07:50", exitTime: "18:25", passType: "QR" },
+  { id: "11", name: "Орлова Марина Дмитриевна",   object: "ВСНК",    date: "20.04.2026", entryTime: "09:00", exitTime: "16:30", passType: "Карта" },
+  { id: "12", name: "Фёдоров Павел Олегович",     object: "ВЧНГ",    date: "20.04.2026", entryTime: "07:55", exitTime: "18:15", passType: "QR" },
 ];
 
-const EVENTS = [
-  { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-002 согласована", time: "14:23" },
-  { icon: "CreditCard", color: "text-blue-500", text: "Пропуск выдан: Смирнова А.В.", time: "14:05" },
-  { icon: "AlertCircle", color: "text-amber-500", text: "На доработку: ЗАЯ-005 — нет медосмотра", time: "13:41" },
-  { icon: "UserPlus", color: "text-violet-500", text: "Новый сотрудник: Фёдоров П.О.", time: "12:30" },
-  { icon: "XCircle", color: "text-red-500", text: "Заявка ЗАЯ-003 отклонена СБ", time: "11:18" },
-  { icon: "Clock", color: "text-slate-400", text: "Пропуск ЗАЯ-006 истёк", time: "00:00" },
+const ALL_EVENTS = [
+  { icon: "LogIn",        color: "text-blue-400",    text: "Вход: Громов А.И. — ВЧНГ",                  time: "08:05" },
+  { icon: "LogIn",        color: "text-blue-400",    text: "Вход: Тихонов Р.В. — Тагул",                time: "07:30" },
+  { icon: "CheckCircle",  color: "text-emerald-500", text: "Заявка ЗАЯ-002 согласована",                time: "14:23" },
+  { icon: "CreditCard",   color: "text-blue-500",    text: "Пропуск выдан: Смирнова А.В.",              time: "14:05" },
+  { icon: "AlertCircle",  color: "text-amber-500",   text: "На доработку: ЗАЯ-005 — нет медосмотра",   time: "13:41" },
+  { icon: "UserPlus",     color: "text-violet-500",  text: "Новая заявка: Громов А.И. — ВЧНГ",         time: "12:30" },
+  { icon: "XCircle",      color: "text-red-500",     text: "Заявка ЗАЯ-003 отклонена СБ",              time: "11:18" },
+  { icon: "LogOut",       color: "text-slate-400",   text: "Выход: Смирнова А.В. — ОБП",               time: "17:55" },
+  { icon: "Clock",        color: "text-orange-400",  text: "Пропуск ЗАЯ-006 истёк — требует продления", time: "00:00" },
+];
+
+const OBJECT_STATS = [
+  { name: "Сузун",   online: 34, total: 48, color: "bg-blue-500" },
+  { name: "ВЧНГ",    online: 21, total: 30, color: "bg-violet-500" },
+  { name: "Тагул",   online: 18, total: 27, color: "bg-emerald-500" },
+  { name: "ОБП",     online: 15, total: 22, color: "bg-amber-500" },
+  { name: "ВСНК",    online: 9,  total: 15, color: "bg-cyan-500" },
+  { name: "Дойтаги", online: 4,  total: 6,  color: "bg-rose-500" },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -163,86 +185,145 @@ function StatCard({ label, value, icon, color, delta }: { label: string; value: 
   );
 }
 
+// ─── LiveFeed ─────────────────────────────────────────────────────────────────
+function LiveFeed() {
+  const [events, setEvents] = useState(ALL_EVENTS.slice(0, 6));
+  const [pulse, setPulse] = useState(false);
+
+  useEffect(() => {
+    const newEntries = [
+      { icon: "LogIn",       color: "text-blue-400",   text: "Вход: Захарова О.М. — ВСНК",           time: "сейчас" },
+      { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-010 поступила на согласование", time: "сейчас" },
+      { icon: "LogIn",       color: "text-blue-400",   text: "Вход: Тихонов Р.В. — Тагул",           time: "сейчас" },
+      { icon: "CreditCard",  color: "text-blue-500",   text: "QR-пропуск активирован: Белов С.Н.",   time: "сейчас" },
+    ];
+    let idx = 0;
+    const timer = setInterval(() => {
+      setPulse(true);
+      setTimeout(() => setPulse(false), 600);
+      setEvents(prev => [{ ...newEntries[idx % newEntries.length] }, ...prev.slice(0, 7)]);
+      idx++;
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-semibold text-sm text-foreground">Лента событий</h3>
+        <div className="flex items-center gap-1.5">
+          <span className={`w-2 h-2 rounded-full bg-emerald-500 ${pulse ? "scale-125" : ""} transition-transform`} />
+          <span className="text-xs text-emerald-600 font-medium">Live</span>
+        </div>
+      </div>
+      <div className="space-y-2">
+        {events.map((e, i) => (
+          <div
+            key={i}
+            className={`flex items-center gap-3 text-sm py-1.5 px-2 rounded-lg transition-all ${i === 0 ? "bg-blue-50 border border-blue-100" : ""}`}
+            style={{ animationDelay: `${i * 0.05}s` }}
+          >
+            <Icon name={e.icon} size={15} className={e.color} />
+            <span className="flex-1 text-foreground text-xs">{e.text}</span>
+            <span className={`text-xs font-medium ${e.time === "сейчас" ? "text-blue-500" : "text-muted-foreground"}`}>{e.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 function Dashboard() {
+  const [onlineCount, setOnlineCount] = useState(101);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setOnlineCount(n => n + (Math.random() > 0.5 ? 1 : -1));
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-5 animate-fade-in">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Активных пропусков" value={148} icon="CreditCard" color="bg-blue-600" delta="+5 сегодня" />
-        <StatCard label="На согласовании" value={12} icon="Clock" color="bg-amber-500" />
+        <StatCard label="Активных пропусков" value={312} icon="CreditCard" color="bg-blue-600" delta="+18 за месяц" />
+        <StatCard label="На согласовании" value={24} icon="Clock" color="bg-amber-500" delta="3 срочных" />
         <StatCard label="Просроченных" value={7} icon="AlertTriangle" color="bg-red-500" />
-        <StatCard label="Новых сотрудников" value={3} icon="UserPlus" color="bg-violet-600" delta="за неделю" />
+        <div className="bg-white rounded-xl border border-border p-4 hover-lift animate-slide-up">
+          <div className="flex items-start justify-between mb-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center relative">
+              <Icon name="Users" size={20} className="text-white" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-400 animate-ping opacity-75" />
+            </div>
+            <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">онлайн</span>
+          </div>
+          <p className="text-2xl font-bold text-foreground tabular-nums">{onlineCount}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Сейчас на объектах</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-white rounded-xl border border-border p-4 animate-slide-up">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-sm text-foreground">Динамика проходов за неделю</h3>
-            <span className="text-xs text-muted-foreground">22–28 апреля 2026</span>
+            <h3 className="font-semibold text-sm text-foreground">Проходы по дням — апрель 2026</h3>
+            <span className="text-xs text-muted-foreground">все объекты</span>
           </div>
-          <div className="flex items-end gap-2 h-32">
-            {[42, 67, 55, 78, 61, 89, 74].map((v, i) => {
-              const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-              const isToday = i === 0;
-              return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className={`w-full rounded-t-md transition-all ${isToday ? "bg-primary" : "bg-primary/20 hover:bg-primary/40"}`}
-                    style={{ height: `${(v / 89) * 100}%` }}
-                  />
-                  <span className={`text-xs ${isToday ? "text-primary font-semibold" : "text-muted-foreground"}`}>{days[i]}</span>
-                </div>
-              );
-            })}
+          <div className="flex items-end gap-1.5 h-28">
+            {[
+              { v: 87, d: "1" }, { v: 91, d: "2" }, { v: 78, d: "3" }, { v: 94, d: "4" }, { v: 0, d: "5" },
+              { v: 0, d: "6" }, { v: 102, d: "7" }, { v: 98, d: "8" }, { v: 105, d: "9" }, { v: 110, d: "10" },
+              { v: 99, d: "11" }, { v: 0, d: "12" }, { v: 0, d: "13" }, { v: 118, d: "14" }, { v: 121, d: "15" },
+              { v: 109, d: "16" }, { v: 115, d: "17" }, { v: 124, d: "18" }, { v: 0, d: "19" }, { v: 0, d: "20" },
+              { v: 119, d: "21" }, { v: 101, d: "22", today: true },
+            ].map((item, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
+                {item.v > 0 && (
+                  <span className={`text-xs font-semibold ${item.today ? "text-primary" : "text-transparent group-hover:text-muted-foreground"}`}>
+                    {item.today ? item.v : ""}
+                  </span>
+                )}
+                <div
+                  className={`w-full rounded-t transition-all ${item.today ? "bg-primary" : item.v === 0 ? "bg-muted/30" : "bg-primary/25 hover:bg-primary/50"}`}
+                  style={{ height: item.v > 0 ? `${(item.v / 124) * 100}%` : "6px" }}
+                />
+                <span className={`text-xs ${item.today ? "text-primary font-bold" : "text-muted-foreground"}`}>{item.d}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 flex gap-4 text-xs text-muted-foreground border-t border-border pt-2">
+            <span>Всего за апрель: <b className="text-foreground">2 071</b></span>
+            <span>Ср./день: <b className="text-foreground">103</b></span>
+            <span>Макс.: <b className="text-foreground">124</b> (15.04)</span>
           </div>
         </div>
 
         <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
-          <h3 className="font-semibold text-sm text-foreground mb-3">Апрель 2026</h3>
-          <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
-            {["Пн","Вт","Ср","Чт","Пт","Сб","Вс"].map(d => (
-              <span key={d} className="text-xs text-muted-foreground font-medium">{d}</span>
+          <h3 className="font-semibold text-sm text-foreground mb-3">Онлайн по объектам</h3>
+          <div className="space-y-3">
+            {OBJECT_STATS.map((obj, i) => (
+              <div key={i}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-foreground">{obj.name}</span>
+                  <span className="text-xs text-muted-foreground">{obj.online}/{obj.total}</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${obj.color} transition-all`}
+                    style={{ width: `${(obj.online / obj.total) * 100}%` }}
+                  />
+                </div>
+              </div>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-0.5 text-center">
-            {Array.from({ length: 2 }).map((_, i) => <span key={i} />)}
-            {Array.from({ length: 30 }, (_, i) => i + 1).map(d => (
-              <button
-                key={d}
-                className={`text-xs py-1 rounded transition-all ${d === 22 ? "bg-primary text-white font-bold" : d < 22 ? "text-muted-foreground hover:bg-muted" : "hover:bg-muted text-foreground"}`}
-              >
-                {d}
-                {[14, 22, 25, 28].includes(d) && (
-                  <span className="block w-1 h-1 rounded-full bg-amber-400 mx-auto mt-0.5" />
-                )}
-              </button>
-            ))}
-          </div>
-          <div className="mt-3 space-y-1.5">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
-              14.04 — Заезд бригады монтажников
-            </div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0" />
-              25.04 — Истекает 12 пропусков
-            </div>
+          <div className="mt-3 pt-2 border-t border-border flex items-center justify-between text-xs">
+            <span className="text-muted-foreground">Итого онлайн</span>
+            <span className="font-bold text-foreground">{OBJECT_STATS.reduce((a, o) => a + o.online, 0)} чел.</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
-        <h3 className="font-semibold text-sm text-foreground mb-3">Последние события</h3>
-        <div className="space-y-2.5">
-          {EVENTS.map((e, i) => (
-            <div key={i} className="flex items-center gap-3 text-sm">
-              <Icon name={e.icon} size={16} className={e.color} />
-              <span className="flex-1 text-foreground">{e.text}</span>
-              <span className="text-xs text-muted-foreground">{e.time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <LiveFeed />
     </div>
   );
 }
