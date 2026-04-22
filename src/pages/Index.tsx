@@ -28,7 +28,7 @@ interface JournalEntry {
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 const APPLICATIONS: Application[] = [
   { id: "ЗАЯ-001", name: "Иванов Алексей Петрович", object: "Сузун", status: "pending", validUntil: "30.06.2026", position: "Электромонтажник", passType: "QR", submittedAt: "18.04.2026" },
-  { id: "ЗАЯ-002", name: "Смирнова Анна Владимировна", object: "КЭМП. ОБП", status: "active", validUntil: "15.07.2026", position: "Инженер ПТО", passType: "Карта", submittedAt: "10.04.2026" },
+  { id: "ЗАЯ-002", name: "Смирнова Анна Владимировна", object: "ОБП", status: "active", validUntil: "15.07.2026", position: "Инженер ПТО", passType: "Карта", submittedAt: "10.04.2026" },
   { id: "ЗАЯ-003", name: "Козлов Дмитрий Сергеевич", object: "Дойтаги", status: "rejected", validUntil: "—", position: "Сварщик", passType: "QR", submittedAt: "15.04.2026" },
   { id: "ЗАЯ-004", name: "Новикова Елена Игоревна", object: "Тагул", status: "pending", validUntil: "01.08.2026", position: "Прораб", passType: "Карта", submittedAt: "20.04.2026" },
   { id: "ЗАЯ-005", name: "Фёдоров Павел Олегович", object: "ВЧНГ", status: "active", validUntil: "20.05.2026", position: "Монтажник", passType: "QR", submittedAt: "01.04.2026" },
@@ -37,7 +37,7 @@ const APPLICATIONS: Application[] = [
 
 const JOURNAL: JournalEntry[] = [
   { id: "1", name: "Иванов Алексей Петрович", object: "Сузун", date: "22.04.2026", entryTime: "07:45", exitTime: "18:30", passType: "QR" },
-  { id: "2", name: "Смирнова Анна Владимировна", object: "КЭМП. ОБП", date: "22.04.2026", entryTime: "08:01", exitTime: "17:55", passType: "Карта" },
+  { id: "2", name: "Смирнова Анна Владимировна", object: "ОБП", date: "22.04.2026", entryTime: "08:01", exitTime: "17:55", passType: "Карта" },
   { id: "3", name: "Фёдоров Павел Олегович", object: "ВЧНГ", date: "22.04.2026", entryTime: "07:58", exitTime: "18:10", passType: "QR" },
   { id: "4", name: "Козлов Дмитрий Сергеевич", object: "Дойтаги", date: "21.04.2026", entryTime: "08:15", exitTime: "17:40", passType: "QR" },
   { id: "5", name: "Новикова Елена Игоревна", object: "Тагул", date: "21.04.2026", entryTime: "08:00", exitTime: "18:00", passType: "Карта" },
