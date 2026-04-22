@@ -297,30 +297,6 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-sm text-foreground">Загрузка по объектам</h3>
-          <span className="text-xs text-muted-foreground">
-            Итого онлайн: <b className="text-foreground">{OBJECT_STATS.reduce((a, o) => a + o.online, 0)}</b> чел.
-          </span>
-        </div>
-        <div className="grid grid-cols-3 gap-x-8 gap-y-3">
-          {OBJECT_STATS.map((obj, i) => (
-            <div key={i}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-foreground">{obj.name}</span>
-                <span className="text-xs text-muted-foreground tabular-nums">{obj.online}/{obj.total}</span>
-              </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full ${obj.color}`}
-                  style={{ width: `${(obj.online / obj.total) * 100}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
         <div className="flex items-center justify-between mb-3">
