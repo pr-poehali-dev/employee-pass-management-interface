@@ -53,6 +53,15 @@ const BASE_EVENTS = [
   { icon: "Clock",       color: "text-slate-400",   text: "Пропуск ЗАЯ-006 истёк",                  time: "00:00" },
 ];
 
+const OBJECT_STATS = [
+  { name: "Сузун",   online: 34, total: 48, color: "bg-blue-500" },
+  { name: "ВЧНГ",    online: 21, total: 30, color: "bg-violet-500" },
+  { name: "Тагул",   online: 18, total: 27, color: "bg-emerald-500" },
+  { name: "ОБП",     online: 15, total: 22, color: "bg-amber-500" },
+  { name: "ВСНК",    online: 9,  total: 15, color: "bg-cyan-500" },
+  { name: "Дойтаги", online: 4,  total: 6,  color: "bg-rose-500" },
+];
+
 const LIVE_EVENTS = [
   { icon: "LogIn",       color: "text-blue-400",    text: "Вход по QR: Иванов А.П. — Сузун" },
   { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-004 согласована HR" },
@@ -285,6 +294,31 @@ function Dashboard() {
               25.04 — Истекает 12 пропусков
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-sm text-foreground">Загрузка по объектам</h3>
+          <span className="text-xs text-muted-foreground">
+            Итого онлайн: <b className="text-foreground">{OBJECT_STATS.reduce((a, o) => a + o.online, 0)}</b> чел.
+          </span>
+        </div>
+        <div className="grid grid-cols-3 gap-x-8 gap-y-3">
+          {OBJECT_STATS.map((obj, i) => (
+            <div key={i}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-medium text-foreground">{obj.name}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{obj.online}/{obj.total}</span>
+              </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full ${obj.color}`}
+                  style={{ width: `${(obj.online / obj.total) * 100}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
