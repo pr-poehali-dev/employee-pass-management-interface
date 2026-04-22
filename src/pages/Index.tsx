@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -44,13 +44,22 @@ const JOURNAL: JournalEntry[] = [
   { id: "6", name: "Орлова Марина Дмитриевна",   object: "ВСНК",    date: "20.04.2026", entryTime: "09:00", exitTime: "16:30", passType: "Карта" },
 ];
 
-const EVENTS = [
-  { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-002 согласована",              time: "14:23" },
-  { icon: "CreditCard",  color: "text-blue-500",    text: "Пропуск выдан: Смирнова А.В.",             time: "14:05" },
-  { icon: "AlertCircle", color: "text-amber-500",   text: "На доработку: ЗАЯ-005 — нет медосмотра",  time: "13:41" },
-  { icon: "UserPlus",    color: "text-violet-500",  text: "Новый сотрудник: Фёдоров П.О.",            time: "12:30" },
-  { icon: "XCircle",     color: "text-red-500",     text: "Заявка ЗАЯ-003 отклонена СБ",             time: "11:18" },
-  { icon: "Clock",       color: "text-slate-400",   text: "Пропуск ЗАЯ-006 истёк",                   time: "00:00" },
+const BASE_EVENTS = [
+  { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-002 согласована",             time: "14:23" },
+  { icon: "CreditCard",  color: "text-blue-500",    text: "Пропуск выдан: Смирнова А.В.",            time: "14:05" },
+  { icon: "AlertCircle", color: "text-amber-500",   text: "На доработку: ЗАЯ-005 — нет медосмотра", time: "13:41" },
+  { icon: "UserPlus",    color: "text-violet-500",  text: "Новый сотрудник: Фёдоров П.О.",           time: "12:30" },
+  { icon: "XCircle",     color: "text-red-500",     text: "Заявка ЗАЯ-003 отклонена СБ",            time: "11:18" },
+  { icon: "Clock",       color: "text-slate-400",   text: "Пропуск ЗАЯ-006 истёк",                  time: "00:00" },
+];
+
+const LIVE_EVENTS = [
+  { icon: "LogIn",       color: "text-blue-400",    text: "Вход по QR: Иванов А.П. — Сузун" },
+  { icon: "CheckCircle", color: "text-emerald-500", text: "Заявка ЗАЯ-004 согласована HR" },
+  { icon: "LogIn",       color: "text-blue-400",    text: "Вход по QR: Фёдоров П.О. — ВЧНГ" },
+  { icon: "CreditCard",  color: "text-blue-500",    text: "Пропуск активирован: Тихонов Р.В." },
+  { icon: "LogOut",      color: "text-slate-400",   text: "Выход: Смирнова А.В. — ОБП" },
+  { icon: "UserPlus",    color: "text-violet-500",  text: "Новая заявка: Громов А.И. — ВЧНГ" },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -165,13 +174,48 @@ function StatCard({ label, value, icon, color, delta }: { label: string; value: 
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 function Dashboard() {
+  const [online, setOnline] = useState(73);
+  const [events, setEvents] = useState(BASE_EVENTS);
+  const [newIdx, setNewIdx] = useState(0);
+  const [highlighted, setHighlighted] = useState(false);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setOnline(n => Math.max(60, Math.min(95, n + (Math.random() > 0.45 ? 1 : -1))));
+    }, 2800);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      const entry = { ...LIVE_EVENTS[newIdx % LIVE_EVENTS.length], time: timeStr };
+      setEvents(prev => [entry, ...prev.slice(0, 5)]);
+      setNewIdx(i => i + 1);
+      setHighlighted(true);
+      setTimeout(() => setHighlighted(false), 1200);
+    }, 5000);
+    return () => clearInterval(t);
+  }, [newIdx]);
+
   return (
     <div className="p-6 space-y-6 animate-fade-in">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard label="Активных пропусков" value={148} icon="CreditCard" color="bg-blue-600" delta="+5 сегодня" />
         <StatCard label="На согласовании" value={12} icon="Clock" color="bg-amber-500" />
         <StatCard label="Просроченных" value={7} icon="AlertTriangle" color="bg-red-500" />
-        <StatCard label="Новых сотрудников" value={3} icon="UserPlus" color="bg-violet-600" delta="за неделю" />
+        <div className="bg-white rounded-xl border border-border p-4 hover-lift animate-slide-up">
+          <div className="flex items-start justify-between mb-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center relative">
+              <Icon name="Users" size={20} className="text-white" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping opacity-80" />
+            </div>
+            <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">онлайн</span>
+          </div>
+          <p className="text-2xl font-bold text-foreground tabular-nums transition-all">{online}</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Сейчас на объектах</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
@@ -245,12 +289,21 @@ function Dashboard() {
       </div>
 
       <div className="bg-white rounded-xl border border-border p-4 animate-slide-up">
-        <h3 className="font-semibold text-sm text-foreground mb-3">Последние события</h3>
-        <div className="space-y-2.5">
-          {EVENTS.map((e, i) => (
-            <div key={i} className="flex items-center gap-3 text-sm">
-              <Icon name={e.icon} size={16} className={e.color} />
-              <span className="flex-1 text-foreground">{e.text}</span>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-sm text-foreground">Последние события</h3>
+          <div className="flex items-center gap-1.5">
+            <span className={`w-2 h-2 rounded-full bg-emerald-500 transition-transform duration-300 ${highlighted ? "scale-150" : "scale-100"}`} />
+            <span className="text-xs text-emerald-600 font-medium">Live</span>
+          </div>
+        </div>
+        <div className="space-y-1.5">
+          {events.map((e, i) => (
+            <div
+              key={i}
+              className={`flex items-center gap-3 text-sm px-2 py-1.5 rounded-lg transition-all duration-500 ${i === 0 && highlighted ? "bg-blue-50 border border-blue-100" : ""}`}
+            >
+              <Icon name={e.icon} size={15} className={e.color} />
+              <span className="flex-1 text-foreground text-xs">{e.text}</span>
               <span className="text-xs text-muted-foreground">{e.time}</span>
             </div>
           ))}
