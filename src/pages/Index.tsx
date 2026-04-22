@@ -178,22 +178,35 @@ function Dashboard() {
         <div className="col-span-2 bg-white rounded-xl border border-border p-4 animate-slide-up">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-sm text-foreground">Динамика проходов за неделю</h3>
-            <span className="text-xs text-muted-foreground">22–28 апреля 2026</span>
+            <span className="text-xs text-muted-foreground">16–22 апреля 2026</span>
           </div>
-          <div className="flex items-end gap-2 h-32">
-            {[42, 67, 55, 78, 61, 89, 74].map((v, i) => {
-              const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-              const isToday = i === 0;
-              return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className={`w-full rounded-t-md transition-all ${isToday ? "bg-primary" : "bg-primary/20 hover:bg-primary/40"}`}
-                    style={{ height: `${(v / 89) * 100}%` }}
-                  />
-                  <span className={`text-xs ${isToday ? "text-primary font-semibold" : "text-muted-foreground"}`}>{days[i]}</span>
-                </div>
-              );
-            })}
+          <div className="flex items-end gap-2 h-36">
+            {[
+              { v: 94, d: "Пн", date: "16.04" },
+              { v: 108, d: "Вт", date: "17.04" },
+              { v: 101, d: "Ср", date: "18.04" },
+              { v: 117, d: "Чт", date: "19.04" },
+              { v: 124, d: "Пт", date: "20.04" },
+              { v: 38, d: "Сб", date: "21.04" },
+              { v: 73, d: "Вс", date: "22.04", today: true },
+            ].map((item, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
+                <span className={`text-xs font-semibold tabular-nums transition-opacity ${item.today ? "text-primary opacity-100" : "text-muted-foreground opacity-0 group-hover:opacity-100"}`}>
+                  {item.v}
+                </span>
+                <div
+                  className={`w-full rounded-t-md transition-all duration-300 ${item.today ? "bg-primary" : item.v < 50 ? "bg-primary/15 hover:bg-primary/30" : "bg-primary/30 hover:bg-primary/50"}`}
+                  style={{ height: `${(item.v / 124) * 100}%` }}
+                />
+                <span className={`text-xs font-medium ${item.today ? "text-primary" : "text-muted-foreground"}`}>{item.d}</span>
+                <span className="text-xs text-muted-foreground/60">{item.date}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 pt-2 border-t border-border flex gap-4 text-xs text-muted-foreground">
+            <span>Итого за неделю: <b className="text-foreground">655</b></span>
+            <span>Пиковый день: <b className="text-foreground">124</b> (пт)</span>
+            <span className="text-emerald-600 font-medium">↑ +22% к прошлой неделе</span>
           </div>
         </div>
 
